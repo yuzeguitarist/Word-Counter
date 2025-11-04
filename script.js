@@ -767,14 +767,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // 窗口大小改变时重新调整高度（使用节流避免性能问题）
+    // 窗口大小改变时重新调整高度（使用防抖/debounce 避免性能问题）
     window.addEventListener('resize', () => {
         if (wordCounter.resizeTimer) {
             clearTimeout(wordCounter.resizeTimer);
         }
         wordCounter.resizeTimer = setTimeout(() => {
             wordCounter.adjustTextareaHeight();
-        }, 150); // 150ms 节流延迟
+        }, 150); // 150ms 防抖延迟
     });
     
     // 键盘快捷键
