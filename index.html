@@ -10,7 +10,7 @@
     <div class="container">
         <!-- 顶部工具栏 -->
         <div class="top-toolbar">
-            <button id="langSwitch" class="toolbar-btn">中</button>
+            <button id="langSwitch" class="toolbar-btn" aria-label="切换统计模式（中文/英文）">中</button>
         </div>
 
         <!-- 头部标题 -->
@@ -26,45 +26,46 @@
                 <div class="input-header">
                     <label for="textInput" class="input-label">输入文本</label>
                     <div class="button-group">
-                        <button id="pasteBtn" class="toolbar-btn" title="粘贴文本">
+                        <button id="pasteBtn" class="toolbar-btn" title="粘贴文本" aria-label="从剪贴板粘贴文本">
                             <span class="paste-text">粘贴</span>
                         </button>
-                        <button id="exportBtn" class="toolbar-btn" title="导出为图片">
+                        <button id="exportBtn" class="toolbar-btn" title="导出为图片" aria-label="将统计结果导出为图片">
                             <span class="export-text">导出</span>
                         </button>
                     </div>
                 </div>
-                <textarea 
-                    id="textInput" 
-                    class="text-input" 
+                <textarea
+                    id="textInput"
+                    class="text-input"
                     placeholder="在这里输入你的文本..."
                     rows="12"
+                    aria-label="文本输入区域"
                 ></textarea>
             </div>
 
             <!-- 统计结果区域 -->
-            <div class="stats-section">
+            <div class="stats-section" role="region" aria-label="统计结果">
                 <h2 class="stats-title">统计结果</h2>
-                
+
                 <!-- 主要统计数据 -->
                 <div class="stats-grid">
                     <div class="stat-card primary">
-                        <div class="stat-number" id="totalCount">0</div>
+                        <div class="stat-number" id="totalCount" role="status" aria-live="polite" aria-label="总字数">0</div>
                         <div class="stat-label">总字数</div>
                     </div>
-                    
+
                     <div class="stat-card">
-                        <div class="stat-number" id="wordCount">0</div>
+                        <div class="stat-number" id="wordCount" role="status" aria-live="polite" aria-label="字数">0</div>
                         <div class="stat-label" id="wordLabel">字数</div>
                     </div>
-                    
+
                     <div class="stat-card">
-                        <div class="stat-number" id="punctuationCount">0</div>
+                        <div class="stat-number" id="punctuationCount" role="status" aria-live="polite" aria-label="标点符号数">0</div>
                         <div class="stat-label">标点符号数</div>
                     </div>
-                    
+
                     <div class="stat-card">
-                        <div class="stat-number" id="characterCount">0</div>
+                        <div class="stat-number" id="characterCount" role="status" aria-live="polite" aria-label="字符数（含空格）">0</div>
                         <div class="stat-label">字符数（含空格）</div>
                     </div>
                 </div>
@@ -78,11 +79,11 @@
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">字符数（不含空格）</span>
-                        <span class="detail-value" id="characterNoSpaceCount">0</span>
+                        <span class="detail-value" id="characterNoSpaceCount" role="status" aria-live="polite">0</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">段落数</span>
-                        <span class="detail-value" id="paragraphCount">0</span>
+                        <span class="detail-value" id="paragraphCount" role="status" aria-live="polite">0</span>
                     </div>
                 </div>
             </div>
@@ -106,7 +107,7 @@
     </div>
 
     <!-- 消息提示框 -->
-    <div id="messageBox" class="message-box"></div>
+    <div id="messageBox" class="message-box" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <script src="script.js"></script>
 </body>

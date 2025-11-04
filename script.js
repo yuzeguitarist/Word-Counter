@@ -31,7 +31,8 @@ class WordCounter {
         this.inputBuffer = [];
         this.isTyping = false;
         this.typingTimer = null;
-        
+        this.resizeTimer = null;
+
         // 初始化
         this.init();
     }
@@ -474,34 +475,26 @@ class WordCounter {
             // 设置高分辨率画布宽度
             canvas.width = baseWidth * scale;
             canvas.style.width = baseWidth + 'px';
-            
-            // 设置缩放和字体
-            ctx.scale(scale, scale);
-            ctx.textBaseline = 'top';
-            ctx.textAlign = 'left';
-            ctx.textRenderingOptimization = 'optimizeQuality';
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
-            
-            // 使用系统字体
+
+            // 使用系统字体来计算文字行数和高度
             ctx.font = `${baseFontSize}px "Songti", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimSun", serif`;
-            
+
             // 计算文字行数和高度
             const maxWidth = baseWidth - basePadding * 2;
             const lines = this.wrapText(ctx, text, maxWidth, baseFontSize);
             const textHeight = lines.length * baseLineHeight;
-            
+
             // 计算总高度：上横线 + 文字区域 + 下横线 + 字数区域
             const lineThickness = 3; // 稍微增加线条粗细
             const lineMargin = 50;
             const countAreaHeight = 80;
             const baseCanvasHeight = lineMargin + lineThickness + lineMargin + textHeight + lineMargin + lineThickness + countAreaHeight;
-            
+
             // 设置画布高度
             canvas.height = baseCanvasHeight * scale;
             canvas.style.height = baseCanvasHeight + 'px';
-            
-            // 重新设置缩放和字体（调整画布高度后需要重设）
+
+            // 设置缩放和字体（设置画布高度后，context会被重置，所以需要重新设置）
             ctx.scale(scale, scale);
             ctx.textBaseline = 'top';
             ctx.textAlign = 'left';
@@ -610,34 +603,26 @@ class WordCounter {
             // 设置高分辨率画布
             canvas.width = canvasWidth;
             canvas.style.width = baseWidth + 'px';
-            
-            // 设置字体和文字渲染
-            ctx.scale(scale, scale);
-            ctx.textBaseline = 'top';
-            ctx.textAlign = 'left';
-            ctx.textRenderingOptimization = 'optimizeQuality';
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
-            
-            // 使用系统中文字体
+
+            // 使用系统中文字体来计算文字行数和高度
             ctx.font = `${baseFontSize}px "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimSun", serif`;
-            
+
             // 计算文字行数和高度
             const maxWidth = baseWidth - basePadding * 2;
             const lines = this.wrapText(ctx, text, maxWidth, baseFontSize);
             const textHeight = lines.length * baseLineHeight;
-            
+
             // 计算总高度
             const lineThickness = 3;
             const lineMargin = 50;
             const countAreaHeight = 80;
             const baseCanvasHeight = lineMargin + lineThickness + lineMargin + textHeight + lineMargin + lineThickness + countAreaHeight;
-            
+
             // 设置画布高度
             canvas.height = baseCanvasHeight * scale;
             canvas.style.height = baseCanvasHeight + 'px';
-            
-            // 重新设置缩放和字体
+
+            // 设置缩放和字体（设置画布高度后，context会被重置，所以需要重新设置）
             ctx.scale(scale, scale);
             ctx.textBaseline = 'top';
             ctx.textAlign = 'left';
@@ -782,9 +767,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // 窗口大小改变时重新调整高度
+    // 窗口大小改变时重新调整高度（使用节流避免性能问题）
     window.addEventListener('resize', () => {
-        wordCounter.adjustTextareaHeight();
+        if (wordCounter.resizeTimer) {
+            clearTimeout(wordCounter.resizeTimer);
+        }
+        wordCounter.resizeTimer = setTimeout(() => {
+            wordCounter.adjustTextareaHeight();
+        }, 150); // 150ms 节流延迟
     });
     
     // 键盘快捷键
