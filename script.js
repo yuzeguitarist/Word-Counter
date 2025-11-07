@@ -461,25 +461,28 @@ class WordCounter {
             // 创建高分辨率canvas
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-            
+
             // 设置高DPI比例
             const scale = 3;
-            
+
             // 设置画布基础尺寸
             const baseWidth = 800;
             const basePadding = 80;
             const baseLineHeight = 42;
             const baseFontSize = 28;
             const baseCountFontSize = 24;
-            
-            // 设置高分辨率画布宽度
+
+            // 第一步：设置宽度并先进行缩放，确保wrapText计算正确
             canvas.width = baseWidth * scale;
             canvas.style.width = baseWidth + 'px';
+            ctx.scale(scale, scale);
+            ctx.textBaseline = 'top';
+            ctx.textAlign = 'left';
 
-            // 使用系统字体来计算文字行数和高度
+            // 使用系统字体来计算文字行数和高度（在缩放后的context上）
             ctx.font = `${baseFontSize}px "Songti", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimSun", serif`;
 
-            // 计算文字行数和高度
+            // 计算文字行数和高度（现在使用正确的逻辑坐标系统）
             const maxWidth = baseWidth - basePadding * 2;
             const lines = this.wrapText(ctx, text, maxWidth, baseFontSize);
             const textHeight = lines.length * baseLineHeight;
@@ -490,15 +493,14 @@ class WordCounter {
             const countAreaHeight = 80;
             const baseCanvasHeight = lineMargin + lineThickness + lineMargin + textHeight + lineMargin + lineThickness + countAreaHeight;
 
-            // 设置画布高度
+            // 第二步：设置画布高度（这会重置context，所以需要重新设置所有属性）
             canvas.height = baseCanvasHeight * scale;
             canvas.style.height = baseCanvasHeight + 'px';
 
-            // 设置缩放和字体（设置画布高度后，context会被重置，所以需要重新设置）
+            // 重新设置缩放和属性（因为设置height会重置context）
             ctx.scale(scale, scale);
             ctx.textBaseline = 'top';
             ctx.textAlign = 'left';
-            ctx.textRenderingOptimization = 'optimizeQuality';
             ctx.imageSmoothingEnabled = true;
             ctx.imageSmoothingQuality = 'high';
             
@@ -584,30 +586,33 @@ class WordCounter {
             // 创建高分辨率canvas
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-            
+
             // 设置高DPI比例
             const scale = 3;
-            
+
             // 设置画布基础尺寸
             const baseWidth = 800;
             const basePadding = 80;
             const baseLineHeight = 42;
             const baseFontSize = 28;
-            
+
             // 实际尺寸（高分辨率）
             const canvasWidth = baseWidth * scale;
             const padding = basePadding * scale;
             const lineHeight = baseLineHeight * scale;
             const fontSize = baseFontSize * scale;
-            
-            // 设置高分辨率画布
+
+            // 第一步：设置宽度并先进行缩放，确保wrapText计算正确
             canvas.width = canvasWidth;
             canvas.style.width = baseWidth + 'px';
+            ctx.scale(scale, scale);
+            ctx.textBaseline = 'top';
+            ctx.textAlign = 'left';
 
-            // 使用系统中文字体来计算文字行数和高度
+            // 使用系统中文字体来计算文字行数和高度（在缩放后的context上）
             ctx.font = `${baseFontSize}px "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimSun", serif`;
 
-            // 计算文字行数和高度
+            // 计算文字行数和高度（现在使用正确的逻辑坐标系统）
             const maxWidth = baseWidth - basePadding * 2;
             const lines = this.wrapText(ctx, text, maxWidth, baseFontSize);
             const textHeight = lines.length * baseLineHeight;
@@ -618,15 +623,14 @@ class WordCounter {
             const countAreaHeight = 80;
             const baseCanvasHeight = lineMargin + lineThickness + lineMargin + textHeight + lineMargin + lineThickness + countAreaHeight;
 
-            // 设置画布高度
+            // 第二步：设置画布高度（这会重置context，所以需要重新设置所有属性）
             canvas.height = baseCanvasHeight * scale;
             canvas.style.height = baseCanvasHeight + 'px';
 
-            // 设置缩放和字体（设置画布高度后，context会被重置，所以需要重新设置）
+            // 重新设置缩放和属性（因为设置height会重置context）
             ctx.scale(scale, scale);
             ctx.textBaseline = 'top';
             ctx.textAlign = 'left';
-            ctx.textRenderingOptimization = 'optimizeQuality';
             ctx.imageSmoothingEnabled = true;
             ctx.imageSmoothingQuality = 'high';
             
